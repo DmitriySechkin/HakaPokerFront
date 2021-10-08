@@ -31,13 +31,17 @@ export class Main extends Component {
   render() {
     return (
       <div className="App">
-      <header className="App-header">
+      <header style={{backgroundColor:"green"}} className="App-header">
         <p>Покер планирования</p>
         <div>
           <Button
             variant="contained"
             color="primary" 
-            style={{marginRight: "20px"}}
+            style={{
+              marginRight: "20px", 
+              backgroundColor:"orange",
+              height: "100px"
+            }}
             onClick={this.joinRoomOnClick}
           >
             Зайти в комнату
@@ -45,8 +49,13 @@ export class Main extends Component {
           <Button
             variant="contained"
             color="secondary" 
-            style={{marginRight: "20px"}}
+            style={{
+              marginRight: "20px", 
+              backgroundColor:"orange",
+              height: "100px"
+            }}
             onClick={this.createRoomOnClick}
+
           >
           Создать комнату
           </Button>

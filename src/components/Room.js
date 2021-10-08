@@ -36,6 +36,7 @@ const styles = theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    background: "orange",
   },
   test: {
     textAlign: "center",
@@ -263,7 +264,7 @@ export class Room extends Component {
       <div className={this.props.classes.root}>
 
         <CssBaseline />
-        <AppBar style={{ backgroundColor: "green" }} position="fixed" className={this.props.classes.appBar}>
+        <AppBar position="fixed" className={this.props.classes.appBar}>
           <Toolbar>
             <Typography variant="h6" color="inherit" noWrap className={this.props.classes.test}>
               Покер планирования - ID Комнаты: {this.roomUid}
@@ -290,7 +291,7 @@ export class Room extends Component {
                 }><Person /></ListItemIcon>
                 <ListItemText primary={
                   localStorage.getItem('userUid') === participant.uid ?
-                    participant.name + " (you)" : participant.name
+                    participant.name : participant.name
                 } />
               </ListItem>
             ))} 

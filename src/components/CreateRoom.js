@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -11,118 +11,82 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { createRoom } from '../services/api';
 import toastr from 'toastr';
+import {stylesCreateRoom} from '../themes/mui';
+import { LiveTvOutlined } from '@material-ui/icons';
 
 
-const styles = theme => ({
-	main: {
-		width: 'auto',
-		display: 'block', // Fix IE 11 issue.
-		marginLeft: theme.spacing.unit * 3,
-		marginRight: theme.spacing.unit * 3,
-		[theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-			width: 400,
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		},
-	},
-	paper: {
-		marginTop: theme.spacing.unit * 8,
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-		padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-	},
-	avatar: {
-		margin: theme.spacing.unit,
-		backgroundColor: theme.palette.secondary.main,
-	},
-	form: {
-		width: '100%', // Fix IE 11 issue.
-		marginTop: theme.spacing.unit,
-	},
-	submit: {
-		marginTop: theme.spacing.unit * 3,
-	},
-});
+function CreateRoom(props) {
 
+	const [title, setTitle] = useState("");
+	const [description, setDescription] = useState("");
+	const [creator, setCreator] = useState("");	
 
-export class CreateRoom extends Component {
-
-	state = {
-		title: "",
-		description: "",
-		creator: ""
-	}
-
-	createRoomOnClick = (event) => {
+	const createRoomOnClick = (event) => {
 		event.preventDefault();
+		
 		createRoom(
-			this.state.title,
-			this.state.description,
-			this.state.creator
+			title,
+			description,
+			creator
 		)
 			.then(data => {
 				if (data) {
+					console.log(data.status);
 					localStorage.setItem("accessToken", data.creator.access_token);
 					localStorage.setItem("userUid", data.creator.uid);
-					this.props.history.push("/rooms/" + data.uid);
-				} else {
-					toastr.error("Something went wrong!");
+					props.history.push("/rooms/" + data.uid);
+				} else {					
+					toastr.error(data.title);
 				}
 			})
 			.catch(error => console.log(error));
 	}
-
-	handleInputChange = (event) => {
-		this.setState({ [event.target.name]: event.target.value })
+		
+	return (
+		<main className={props.classes.main} >
+			{/*{<CssBaseline />}*/}
+			<Paper className={props.classes.paper}>
+				<Typography component="h1" variant="h5">
+					Создать комнату
+				</Typography>
+				<form className={props.classes.form}>
+					<FormControl margin="normal" required fullWidth>
+						<InputLabel htmlFor="title">Имя комнаты</InputLabel>
+						<Input id="title" name="title"
+							autoFocus value={title}
+							onChange={(e) => setTitle(e.target.value)} />
+					</FormControl>
+					<FormControl margin="normal" fullWidth>
+						<InputLabel htmlFor="description">Описание комнаты</InputLabel>
+						<Input name="description" id="description"
+							value={description}
+							onChange={(e) => setDescription(e.target.value)} />
+					</FormControl>
+					<FormControl margin="normal" required fullWidth>
+						<InputLabel htmlFor="creator">Имя владельца</InputLabel>
+						<Input name="creator" id="creator"
+							value={creator}
+							onChange={(e) => setCreator(e.target.value)} />
+					</FormControl>
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="secondary"
+						className={props.classes.submit}
+						onClick={(e) => createRoomOnClick(e)}
+					>
+						Создать
+					</Button>
+				</form>
+			</Paper>
+		</main>
+	);
 	}
 
-	render() {
-		return (
-			<main className={this.props.classes.main} >
-				<CssBaseline />
-				<Paper className={this.props.classes.paper}>
-					<Typography component="h1" variant="h5">
-						Создать комнату
-					</Typography>
-					<form className={this.props.classes.form}>
-						<FormControl margin="normal" required fullWidth>
-							<InputLabel htmlFor="title">Имя комнаты</InputLabel>
-							<Input id="title" name="title"
-								autoFocus value={this.state.title}
-								onChange={this.handleInputChange} />
-						</FormControl>
-						<FormControl margin="normal" fullWidth>
-							<InputLabel htmlFor="description">Описание комнаты</InputLabel>
-							<Input name="description" id="description"
-								value={this.state.description}
-								onChange={this.handleInputChange} />
-						</FormControl>
-						<FormControl margin="normal" required fullWidth>
-							<InputLabel htmlFor="creator">Имя владельца</InputLabel>
-							<Input name="creator" id="creator"
-								value={this.state.creator}
-								onChange={this.handleInputChange} />
-						</FormControl>
-						<Button
-							type="submit"
-							fullWidth
-							variant="contained"
-							color="secondary"
-							className={this.props.classes.submit}
-							onClick={this.createRoomOnClick}
-						>
-							Создать
-						</Button>
-					</form>
-				</Paper>
-			</main>
-		);
-	}
-}
 
 CreateRoom.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(styles)(CreateRoom))
+export default withRouter(withStyles(stylesCreateRoom)(CreateRoom))

@@ -1,70 +1,50 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CreateRoom from './CreateRoom';
 import JoinRoom from './JoinRoom';
 import '../App.css';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { stylesMain } from '../themes/mui';
 
-export class Main extends Component {
+function Main(props) {
 
-  state = {
-    action: undefined
-  }
+    const [action, setAction] = useState("join"); 
 
-  createRoomOnClick = (event) => {
-    this.setState({ action: "create" });
-  }
-
-  joinRoomOnClick = (event) => {
-    this.setState({ action: "join" });
-  }
-
-  getActionComponent = () => {
-    if (this.state.action === "create") {
-      return (<CreateRoom />);
-    } else if (this.state.action === "join") {
-      return (<JoinRoom />);
-    } else {
-      return null;
+    const getActionComponent = () => {
+      if (action === "create") {
+        return (<CreateRoom />);
+      } else if (action === "join") {
+        return (<JoinRoom />);
+      } else {
+        return null;
+      }
     }
-  }
 
-  render() {
     return (
       <div className="App">
-      <header style={{backgroundColor:"green"}} className="App-header">
+      <header className="App-header">
         <p>Покер планирования</p>
         <div>
           <Button
             variant="contained"
-            color="primary" 
-            style={{
-              marginRight: "20px", 
-              backgroundColor:"orange",
-              height: "100px"
-            }}
-            onClick={this.joinRoomOnClick}
+            color="secondary" 
+            className={props.classes.button}
+            onClick={() => setAction("join")}
           >
             Зайти в комнату
           </Button>
           <Button
-            variant="contained"
-            color="secondary" 
-            style={{
-              marginRight: "20px", 
-              backgroundColor:"orange",
-              height: "100px"
-            }}
-            onClick={this.createRoomOnClick}
-
+            //className= {props.classes.button}
+            onClick={() => setAction("create")}
           >
-          Создать комнату
+            Создать комнату
           </Button>
         </div>
-        {this.getActionComponent()}
+        {getActionComponent()}
       </header>
     </div>
     )
   }
-}
 
-export default Main
+  export default withStyles(stylesMain)(Main);
+  

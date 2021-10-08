@@ -263,7 +263,7 @@ export class Room extends Component {
     return (
       <div className={this.props.classes.root}>
 
-        <CssBaseline />
+        {/*<CssBaseline />*/}
         <AppBar position="fixed" className={this.props.classes.appBar}>
           <Toolbar>
             <Typography variant="h6" color="inherit" noWrap className={this.props.classes.test}>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
+//import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -76,7 +76,7 @@ export class JoinRoom extends Component {
   render() {
     return (
       <main className={this.props.classes.main}>
-        <CssBaseline />
+        {/*<CssBaseline />*/}
         <Paper className={this.props.classes.paper}>
           <Typography component="h1" variant="h5">
             Зайти в комнату
